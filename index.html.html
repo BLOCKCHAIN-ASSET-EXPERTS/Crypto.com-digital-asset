@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BLOCK LOCK ASSET</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Modern wallet-style (Crypto.com-inspired) theme -->
+  <style>
+    body {
+      background: linear-gradient(135deg, #0a0c2b 0%, #23265b 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      color: #fff;
+    }
+    .wallet-container {
+      max-width: 600px;
+      margin: 40px auto 28px auto;
+      background: #17193b;
+      border-radius: 18px;
+      box-shadow: 0 8px 40px 0 rgba(20,36,84,0.28);
+      padding: 0 0 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .wallet-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 36px 0 16px 0;
+      background: linear-gradient(180deg, #22265d 80%, #17193b 100%);
+      border-bottom: 1.5px solid #262c5c;
+      position: relative;
+    }
+    .wallet-header .circle-logo {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      object-fit: contain;
+      margin-bottom: 12px;
+      border: 2px solid #0a0c2b;
+    }
+    .wallet-header .wallet-title {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #2ad6ff;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+    .wallet-header .wallet-subtitle {
+      color: #b7f5ff;
+      font-size: 1.07em;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 18px;
+    }
+    .wallet-balance-wrap {
+      position: relative;
+      text-align: center;
+      width: 92%;
+      margin: 0 auto;
+      background-color: rgba(255,255,255,0.10);
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      margin-bottom: 20px;
+      padding: 22px 0 16px 0;
+    }
+    .wallet-balance-label {
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: #97e9ff;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .wallet-balance-amount {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #19cb98;
+      margin-bottom: 12px;
+    }
+    .wallet-balance-img {
+      width: 100%;
+      max-width: 350px;
+      height: auto;
+      margin: 15px auto 0 auto;
+      display: block;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(10,12,43,0.16);
+      background: #151a38;
+    }
+    .wallet-buttons {
+      margin: 18px auto 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      width: 90%;
+    }
+    .wallet-btn {
+      flex: 1 1 45%;
+      padding: 12px 0;
+      font-size: 1.08em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      background: #2ad6ff;
+      color: #22265d;
+      transition: background 0.18s, color 0.18s;
+      box-shadow: 0 2px 8px #2ad6ff22;
+    }
+    .wallet-btn.withdraw {
+      background: #fff;
+      color: #2ad6ff;
+      border: 2px solid #2ad6ff;
+    }
+    .wallet-btn:hover {
+      filter: brightness(0.96);
+    }
+    .mid-gif-wrap {
+      text-align: center;
+      margin: 28px auto 0 auto;
+      width: 92%;
+    }
+    .mid-gif {
+      width: 100%;
+      max-width: 350px;
+      height: auto;
+      border-radius: 12px;
+      background: #181818;
+      box-shadow: 0 2px 10px rgba(10,12,43,0.17);
+    }
+    .token-table-wrap {
+      width: 92%;
+      margin: 26px auto 0 auto;
+      background: rgba(35,38,91,0.92);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(20,36,84,0.08);
+      padding: 0;
+      overflow: hidden;
+    }
+    table.token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.01em;
+      background: transparent;
+      margin: 0;
+    }
+    .token-table th, .token-table td {
+      padding: 13px 10px;
+      text-align: left;
+    }
+    .token-table th {
+      color: #2ad6ff;
+      background: #23265b;
+      font-weight: 700;
+      font-size: 1.01em;
+      border-bottom: 1.5px solid #173094;
+      text-align: left;
+    }
+    .token-table td {
+      color: #fff;
+      background: none;
+      font-weight: 500;
+    }
+    .token-table tr:not(:last-child) td {
+      border-bottom: 1px solid #223;
+    }
+    /* Table columns: left, center, right alignment */
+    .token-table td:first-child, .token-table th:first-child {
+      text-align: left;
+    }
+    .token-table td:nth-child(2), .token-table th:nth-child(2) {
+      text-align: center;
+    }
+    .token-table td:last-child, .token-table th:last-child {
+      text-align: right;
+    }
+    /* Large bottom image */
+    .footer-img-wrap {
+      margin: 38px auto 0 auto;
+      width: 94%;
+      text-align: center;
+      padding-bottom: 12px;
+    }
+    .footer-img {
+      width: 100%;
+      max-width: 540px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(20,36,84,0.08);
+    }
+    .security-tip {
+      margin: 22px 0 0 0;
+      background: rgba(42,214,255,0.08);
+      padding: 14px 18px;
+      border-radius: 8px;
+      color: #ffe05c;
+      font-size: 1em;
+      font-weight: 500;
+      text-align: center;
+      width: 89%;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 8px rgba(42,214,255,0.04);
+    }
+    /* Modal Styles */
+    .deposit-page,
+    .error-popup-bg {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10,12,43, 0.77);
+      align-items: center;
+      justify-content: center;
+    }
+    .deposit-card, .error-popup {
+      background: #181c36;
+      border-radius: 16px;
+      box-shadow: 0 6px 32px rgba(42,214,255,0.12);
+      padding: 36px 30px 28px 30px;
+      max-width: 95vw;
+      width: 330px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+    }
+    .deposit-card img {
+      display: block;
+      margin: 0 auto 18px auto;
+      border-radius: 8px;
+    }
+    .deposit-desc {
+      font-size: 1.13em;
+      margin-bottom: 13px;
+      color: #2ad6ff;
+      font-weight: 600;
+    }
+    .error-desc {
+      color: #ffe05c;
+      margin-bottom: 18px;
+      font-size: 1em;
+      word-break: break-all;
+    }
+    .deposit-close,
+    .error-btn {
+      margin-top: 16px;
+      padding: 10px 28px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1.09em;
+      font-weight: 600;
+      cursor: pointer;
+      background: #2ad6ff;
+      color: #17193b;
+      transition: background 0.17s;
+      box-shadow: 0 1px 6px #2ad6ff22;
+    }
+    .error-btn.secondary {
+      background: #fff;
+      color: #2ad6ff;
+      border: 2px solid #2ad6ff;
+      margin-left: 10px;
+    }
+    .error-popup .error-title {
+      font-size: 1.2em;
+      color: #ff6666;
+      margin-bottom: 11px;
+      font-weight: bold;
+    }
+    @media (max-width: 700px) {
+      .wallet-container {
+        max-width: 99vw;
+        border-radius: 9px;
+        margin: 14px 0 12px 0;
+        padding: 0 0 12px 0;
+      }
+      .wallet-header, .wallet-balance-wrap, .mid-gif-wrap, .token-table-wrap, .footer-img-wrap, .security-tip {
+        width: 99vw;
+        max-width: 99vw;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 2vw;
+        padding-right: 2vw;
+      }
+      .wallet-balance-img, .mid-gif, .footer-img {
+        max-width: 99vw;
+      }
+      .token-table th, .token-table td {
+        padding: 9px 4px;
+        font-size: 0.99em;
+      }
+      .deposit-card, .error-popup {
+        width: 94vw;
+        min-width: unset;
+        padding: 14vw 2vw 8vw 2vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wallet-container">
+
+    <!-- Header with Circle logo and Crypto.com Wallet text -->
+    <div class="wallet-header">
+      <img src="IMG_8248.png" alt="Circle Logo" class="circle-logo" />
+      <div class="wallet-title">Crypto.com Wallet</div>
+      <div class="wallet-subtitle">Your multi-chain digital asset portfolio</div>
+    </div>
+
+    <!-- Portfolio Balance Section -->
+    <div class="wallet-balance-wrap">
+      <div class="wallet-balance-label">BLOCK LOCK ASSET</div>
+      <div class="wallet-balance-amount" id="portfolio-balance-amount">$119,170.34</div>
+      <img src="IMG_1164.jpeg" alt="Portfolio" class="wallet-balance-img" />
+      <div class="wallet-buttons">
+        <button class="wallet-btn" id="deposit-btn">Deposit</button>
+        <button class="wallet-btn withdraw" id="withdraw-btn">Withdraw</button>
+      </div>
+    </div>
+
+    <!-- Animated GIF below balance, matching size -->
+    <div class="mid-gif-wrap">
+      <img 
+        src="IMG_1173.jpeg" 
+        alt="Wallet Overview" 
+        class="mid-gif"
+      />
+    </div>
+    
+    <!-- Token Table, aligned left, center, right -->
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Price</th>
+            <th>Available Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>USDT</td>
+            <td>$1.00</td>
+            <td>0.00 USD</td>
+          </tr>
+          <tr>
+            <td>BTC</td>
+            <td>$103,714.83</td>
+            <td>119,170.34 USD</td>
+          </tr>
+          <tr>
+            <td>SOLANA</td>
+            <td>$154.97</td>
+            <td>0.00 USD</td>
+          </tr>
+          <tr>
+            <td>BNB</td>
+            <td>$653.63</td>
+            <td>0.00 USD</td>
+          </tr>
+          <tr>
+            <td>ETH</td>
+            <td>$2,519.16</td>
+            <td>0.00 USD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Security Tip -->
+    <div class="security-tip">
+      <strong>Security Tip:</strong> Never share your private keys or recovery phrases with anyone. Crypto.com support will never ask for them.
+    </div>
+
+    <!-- Footer image -->
+    <div class="footer-img-wrap">
+      <img src="IMG_1177.jpeg" alt="Portfolio Footer" class="footer-img" />
+    </div>
+  </div>
+
+  <!-- Deposit Modal -->
+  <div class="deposit-page" id="deposit-modal">
+    <div class="deposit-card">
+      <img src="IMG_1148.jpeg" alt="Deposit Wallet" style="width:150px; height:150px;"/>
+      <div class="deposit-desc">Deposit BTC token to your wallet.</div>
+      <div class="error-desc"><b>bc1qfd6vmyqr8su956y699dhu2nchl3czpaz5d0ndn</b></div>
+      <button class="deposit-close" id="deposit-close">Close</button>
+    </div>
+  </div>
+
+  <!-- Error Popup Modal -->
+  <div class="error-popup-bg" id="error-popup-bg">
+    <div class="error-popup">
+      <div class="error-title">Sorry, Withdraw can't complete process Due to market inflation fee strike</div>
+      <div class="error-desc">Deposit <b>$850 [0.00819168 BTC]</b> and try again.</div>
+      <div class="error-actions">
+        <button class="error-btn" id="activate-now-btn">Activate now</button>
+        <button class="error-btn secondary" id="close-error-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fix: Show modals by setting display to "flex"
+    const depositBtn = document.getElementById('deposit-btn');
+    const withdrawBtn = document.getElementById('withdraw-btn');
+    const depositModal = document.getElementById('deposit-modal');
+    const depositClose = document.getElementById('deposit-close');
+    const errorPopup = document.getElementById('error-popup-bg');
+    const activateNowBtn = document.getElementById('activate-now-btn');
+    const closeErrorBtn = document.getElementById('close-error-btn');
+
+    depositBtn.onclick = function(e) {
+      e.stopPropagation();
+      depositModal.style.display = 'flex';
+      depositModal.style.alignItems = 'center';
+      depositModal.style.justifyContent = 'center';
+    };
+    withdrawBtn.onclick = function(e) {
+      e.stopPropagation();
+      errorPopup.style.display = 'flex';
+      errorPopup.style.alignItems = 'center';
+      errorPopup.style.justifyContent = 'center';
+    };
+    depositClose.onclick = function(e) {
+      e.stopPropagation();
+      depositModal.style.display = 'none';
+    };
+    activateNowBtn.onclick = function(e) {
+      e.stopPropagation();
+      errorPopup.style.display = 'none';
+      depositModal.style.display = 'flex';
+      depositModal.style.alignItems = 'center';
+      depositModal.style.justifyContent = 'center';
+    };
+    closeErrorBtn.onclick = function(e) {
+      e.stopPropagation();
+      errorPopup.style.display = 'none';
+    };
+
+    // Clicking on background closes modals
+    window.onclick = function(e) {
+      if (e.target === depositModal) {
+        depositModal.style.display = 'none';
+      }
+      if (e.target === errorPopup) {
+        errorPopup.style.display = 'none';
+      }
+    };
+  </script>
+</body>
+</html>
